@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prescription - {{ prescription.patient.full_name }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .container {
+            max-width: 21cm;
+            margin: 0 auto;
+            padding: 2cm;
+            position: relative;
+            background: #ffffff;
+        }
+
+        .border-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid #e5e7eb;
+            margin: 1cm;
+            pointer-events: none;
+        }
+
+        .border-pattern::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 2px solid #2563eb;
+            opacity: 0.1;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #2563eb;
+        }
+
+        .clinic-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .doctor-title {
+            font-size: 18px;
+            color: #4b5563;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .clinic-details {
+            font-size: 14px;
+            color: #64748b;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .clinic-details span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rx-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(148, 163, 184, 0.1);
+        }
+
+        .patient-info, .prescription-info {
+            flex: 1;
+        }
+
+        .prescription-info {
+            text-align: right;
+        }
+
+        .info-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            color: #1e293b;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .rx-symbol {
+            font-size: 24px;
+            color: #2563eb;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .content-section {
+            position: relative;
+            background: #ffffff;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .medication-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .medication-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .medication-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .medication-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .instructions {
+            grid-column: 1 / -1;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #e2e8f0;
+        }
+
+        .diagnosis-section {
+            margin-bottom: 30px;
+        }
+
+        .notes-section {
+            font-size: 14px;
+            color: #475569;
+            font-style: italic;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: right;
+            padding-top: 30px;
+        }
+
+        .signature-section {
+            display: inline-block;
+            text-align: center;
+        }
+
+        .signature-line {
+            width: 200px;
+            border-bottom: 1px solid #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .doctor-name {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 16px;
+        }
+
+        .doctor-details {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="border-pattern"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="clinic-name">
+                {% if settings.clinic_name %}{{ settings.clinic_name }}{% else %}Dental Clinic{% endif %}
+            </div>
+            <div class="doctor-title">
+                {% if settings.doctor_name %}Dr. {{ settings.doctor_name }}{% endif %}
+                {% if settings.doctor_qualifications %}<br>{{ settings.doctor_qualifications }}{% endif %}
+            </div>
+            <div class="clinic-details">
+                {% if settings.clinic_address %}
+                <span><i class="fas fa-location-dot"></i> {{ settings.clinic_address }}</span>
+                {% endif %}
+                {% if settings.clinic_phone %}
+                <span><i class="fas fa-phone"></i> {{ settings.clinic_phone }}</span>
+                {% endif %}
+                {% if settings.clinic_email %}
+                <span><i class="fas fa-envelope"></i> {{ settings.clinic_email }}</span>
+                {% endif %}
+            </div>
+        </header>
+
+        <div class="rx-symbol">℞</div>
+
+        <div class="rx-header">
+            <div class="patient-info">
+                <div class="info-label">Patient Name</div>
+                <div class="info-value">{{ prescription.patient.first_name }} {{ prescription.patient.last_name }}</div>
+                
+                <div class="info-label">Age/Gender</div>
+                <div class="info-value">
+                    {% if prescription.patient.date_of_birth %}
+                        {{ ((now - prescription.patient.date_of_birth).days / 365.25) | int }} years
+                    {% else %}
+                        Age not available
+                    {% endif %}
+                    {% if prescription.patient.gender %} / {{ prescription.patient.gender }}{% endif %}
+                </div>
+            </div>
+            <div class="prescription-info">
+                <div class="info-label">Date</div>
+                <div class="info-value">{{ prescription.date.strftime('%B %d, %Y') }}</div>
+                
+                <div class="info-label">Prescription ID</div>
+                <div class="info-value">#{{ prescription.id }}</div>
+            </div>
+        </div>
+
+        <div class="content-section diagnosis-section">
+            <div class="section-title">Diagnosis</div>
+            <div>{{ prescription.diagnosis }}</div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">Medications</div>
+            <div class="medication-list">
+                {% for medication in prescription.medications %}
+                <div class="medication-item">
+                    <div class="medication-name">{{ medication.name }}</div>
+                    <div class="medication-details">
+                        {% if medication.dosage %}
+                        <div class="detail-item">
+                            <span class="detail-label">Dosage:</span>
+                            {{ medication.dosage }}
+                        </div>
+                        {% endif %}
+                        
+                        {% if medication.frequency %}
+                        <div class="detail-item">
+                            <span class="detail-label">Frequency:</span>
+                            {{ medication.frequency }}
+                        </div>
+                        {% endif %}
+                        
+                        {% if medication.duration %}
+                        <div class="detail-item">
+                            <span class="detail-label">Duration:</span>
+                            {{ medication.duration }}
+                        </div>
+                        {% endif %}
+                        
+                        {% if medication.instructions %}
+                        <div class="instructions">
+                            <span class="detail-label">Instructions:</span>
+                            {{ medication.instructions }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if prescription.notes %}
+        <div class="content-section notes-section">
+            <div class="section-title">Additional Notes</div>
+            <div>{{ prescription.notes }}</div>
+        </div>
+        {% endif %}
+
+        <footer class="footer">
+            <div class="signature-section">
+                <div class="signature-line"></div>
+                <div class="doctor-name">
+                    {% if settings.doctor_name %}Dr. {{ settings.doctor_name }}{% endif %}
+                </div>
+                <div class="doctor-details">
+                    {% if settings.doctor_qualifications %}{{ settings.doctor_qualifications }}{% endif %}
+                    {% if settings.doctor_registration %}
+                    <br>Reg. No: {{ settings.doctor_registration }}
+                    {% endif %}
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        window.onload = function() {
+            if (window.location.search.includes('print=true')) {
+                window.print();
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+"Initializing system..."
+"Loading modules..."
+"> AppointmentSystem.init()"
+"> Database.connect()"
+"> Security.enable()"
+"> Analytics.start()"
+"STATUS: All systems operational"
+"Welcome to DentFlow Pro v2.0"
+"Type 'help' for commands"
+"Ready > _"
+Flask==2.3.3
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.2
+Flask-WTF==1.2.1
+Werkzeug==2.3.7
+email-validator==2.1.0.post1
+python-dateutil==2.8.2
+Flask-Migrate==4.0.5
+WTForms==3.1.1
+python-dotenv==1.0.0
+resend==0.6.0
+split-flap-display==0.5.0
+reportlab==4.0.8
